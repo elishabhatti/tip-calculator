@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const App = () => {
   const [bill, setBill] = useState();
@@ -30,7 +30,7 @@ const App = () => {
         )} | Per Person: ${symbol}${perPerson.toFixed(2)}`
       );
     } else {
-      alert("Add First");
+      alert("Fill the Field First");
     }
   };
 
