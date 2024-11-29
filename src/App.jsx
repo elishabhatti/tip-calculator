@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
+import { FaSun, FaMoon } from "react-icons/fa"; // Import icons from react-icons
 
 const App = () => {
-  const [bill, setBill] = useState();
-  const [tip, setTip] = useState();
-  const [persons, setPersons] = useState();
-  const [currency, setCurrency] = useState();
+  const [bill, setBill] = useState("");
+  const [tip, setTip] = useState("");
+  const [persons, setPersons] = useState("");
+  const [currency, setCurrency] = useState("");
   const [result, setResult] = useState("");
   const [theme, setTheme] = useState("dark");
+  const [copy, setCopy] = useState("Copy")
 
   const currencySymbols = {
     USD: "$:",
@@ -16,10 +18,27 @@ const App = () => {
     PKR: "Rs:",
     Other: "",
   };
-
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };
+
+  const handleRefresh = () => {
+    setBill("")
+    setTip("")
+    setPersons("")
+    setResult("")
+    setCopy("Copy")
+    setCurrency("")
+  }
+
+  const copyToClipboard = () => {
+    if(result) {
+      navigator.clipboard.writeText(result)
+      setCopy("Copied")
+    }else {
+      setCopy("Copy")
+    }
+  }
 
   const handleTipDisplay = () => {
     if (bill && tip && persons && currency) {
@@ -35,6 +54,8 @@ const App = () => {
           2
         )} | Per Person: ${symbol}${perPerson.toFixed(2)}`
       );
+
+
     } else {
       alert("Fill the Field First");
     }
@@ -47,27 +68,25 @@ const App = () => {
       }`}
     >
       <div
-        className={` m-4 w-[450px] ${
+        className={`m-4 w-[450px] ${
           theme === "dark" ? "border border-white" : "border border-gray-400"
-        }  py-5 px-5 rounded-md`}
+        } py-5 px-5 rounded-md`}
       >
-        <button
-          className={`mb-4 w-full py-2 rounded-md font-semibold ${
-            theme === "dark"
-              ? "bg-blue-700 text-white hover:bg-blue-500 "
-              : "bg-neutral-800 text-white hover:bg-neutral-500 "
-          } `}
-          onClick={toggleTheme}
-        >
-          Switch to {theme === "dark" ? "Light" : "Dark"}Theme
-        </button>
         <h1
-          className={`text-2xl font-bold ${
+          className={`text-2xl uppercase  font-bold ${
             theme === "dark" ? "text-white" : "text-black"
-          }  text-center mb-6`}
+          } text-center mb-6`}
         >
           Tip Calculator
         </h1>
+        <button
+          className={`mb-4 w-full bg-blue-700 text-white py-2 rounded-md font-semibold flex justify-center items-center gap-2`}
+          onClick={toggleTheme}
+        >
+          {theme === "dark" ? <FaSun /> : <FaMoon />}
+          {theme === "dark" ? "Light Mode" : "Dark Mode"}
+        </button>
+
         <input
           value={bill}
           onChange={(e) => setBill(e.target.value)}
@@ -111,7 +130,7 @@ const App = () => {
               : "bg-white text-black border-gray-400"
           }`}
         >
-          <option value="Select a Currency">Select a Currency</option>
+          <option value="">Select a Currency</option>
           <option value="USD">USD ($)</option>
           <option value="INR">INR (₹)</option>
           <option value="EUR">EUR (€)</option>
@@ -128,10 +147,18 @@ const App = () => {
         <p
           className={`mt-4 text-lg text-center ${
             theme === "dark" ? "text-white" : "text-black"
-          } `}
+          }`}
         >
           {result}
         </p>
+          {result && (
+            <div className="flex justify-center items-center">
+            <button className={`w-full my-2 mx-1  py-2 rounded-md bg-blue-700 text-white  `}
+             onClick={copyToClipboard}>{copy}</button>
+            <button className={`w-full my-2 mx-1  py-2 rounded-md bg-blue-700 text-white  `}
+             onClick={handleRefresh}>Clear All</button>
+             </div>
+          ) }
       </div>
     </div>
   );
