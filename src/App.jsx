@@ -1,14 +1,23 @@
-import React, {  useState } from "react";
 import { FaSun, FaMoon } from "react-icons/fa"; // Import icons from react-icons
+import { useConsumer } from "./hooks/useContextConsumer";
 
 const App = () => {
-  const [bill, setBill] = useState("");
-  const [tip, setTip] = useState("");
-  const [persons, setPersons] = useState("");
-  const [currency, setCurrency] = useState("");
-  const [result, setResult] = useState("");
-  const [theme, setTheme] = useState("dark");
-  const [copy, setCopy] = useState("Copy")
+  const {
+    bill,
+    setBill,
+    tip,
+    setTip,
+    persons,
+    setPersons,
+    currency,
+    setCurrency,
+    result,
+    setResult,
+    theme,
+    setTheme,
+    copy,
+    setCopy,
+  } = useConsumer();
 
   const currencySymbols = {
     USD: "$:",
@@ -23,22 +32,22 @@ const App = () => {
   };
 
   const handleRefresh = () => {
-    setBill("")
-    setTip("")
-    setPersons("")
-    setResult("")
-    setCopy("Copy")
-    setCurrency("")
-  }
+    setBill("");
+    setTip("");
+    setPersons("");
+    setResult("");
+    setCopy("Copy");
+    setCurrency("");
+  };
 
   const copyToClipboard = () => {
-    if(result) {
-      navigator.clipboard.writeText(result)
-      setCopy("Copied")
-    }else {
-      setCopy("Copy")
+    if (result) {
+      navigator.clipboard.writeText(result);
+      setCopy("Copied");
+    } else {
+      setCopy("Copy");
     }
-  }
+  };
 
   const handleTipDisplay = () => {
     if (bill && tip && persons && currency) {
@@ -54,8 +63,6 @@ const App = () => {
           2
         )} | Per Person: ${symbol}${perPerson.toFixed(2)}`
       );
-
-
     } else {
       alert("Fill the Field First");
     }
@@ -151,14 +158,22 @@ const App = () => {
         >
           {result}
         </p>
-          {result && (
-            <div className="flex justify-center items-center">
-            <button className={`w-full my-2 mx-1  py-2 rounded-md bg-blue-700 text-white  `}
-             onClick={copyToClipboard}>{copy}</button>
-            <button className={`w-full my-2 mx-1  py-2 rounded-md bg-blue-700 text-white  `}
-             onClick={handleRefresh}>Clear All</button>
-             </div>
-          ) }
+        {result && (
+          <div className="flex justify-center items-center">
+            <button
+              className={`w-full my-2 mx-1  py-2 rounded-md bg-blue-700 text-white  `}
+              onClick={copyToClipboard}
+            >
+              {copy}
+            </button>
+            <button
+              className={`w-full my-2 mx-1  py-2 rounded-md bg-blue-700 text-white  `}
+              onClick={handleRefresh}
+            >
+              Clear All
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
